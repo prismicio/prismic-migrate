@@ -1,3 +1,3 @@
-export const hello = (str: string): void => {
-	console.info("Hello %s", str)
-}
+export { htmlAsRichText } from "./htmlAsRichText"
+
+export type { RichTextHTMLMapSerializer } from "./types"

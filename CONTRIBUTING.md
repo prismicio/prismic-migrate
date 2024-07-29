@@ -1,6 +1,6 @@
 # Contributing
 
-This package is primarily maintained by [Prismic](https://prismic.io)[^1]. External contributions are welcome. Ask for help by [opening an issue](https://github.com/github_org_slash_github_repo/issues/new/choose), or request a review by opening a pull request.
+This package is primarily maintained by [Prismic](https://prismic.io)[^1]. External contributions are welcome. Ask for help by [opening an issue](https://github.com/prismicio/prismic-migrate/issues/new/choose), or request a review by opening a pull request.
 
 ## :gear: Setup
 
@@ -23,14 +23,14 @@ The following setup is required to work on this project:
 ## :construction_worker: Develop
 
 > [!NOTE]
-> It's highly recommended to discuss your changes with the Prismic team before starting by [opening an issue](https://github.com/github_org_slash_github_repo/issues/new/choose).[^2]
+> It's highly recommended to discuss your changes with the Prismic team before starting by [opening an issue](https://github.com/prismicio/prismic-migrate/issues/new/choose).[^2]
 >
 > A short discussion can accellerate your work and ship it faster.
 
 ```sh
 # Clone and prepare the project.
-git clone git@github.com:github_org_slash_github_repo.git
-cd github_repo
+git clone git@github.com:prismicio/prismic-migrate.git
+cd prismic-migrate
 npm install
 
 # Create a new branch for your changes (e.g. lh/fix-win32-paths).
