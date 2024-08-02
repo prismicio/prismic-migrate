@@ -1,6 +1,6 @@
 {
 	"name": "@prismicio/migrate",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Set of helpers to migrate your data to Prismic",
 	"keywords": [
 		"typescript",
