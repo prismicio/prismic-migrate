@@ -1,4 +1,9 @@
-import type { RTInlineNode, RTNode, RichTextNodeTypes } from "@prismicio/client"
+import type {
+	InjectMigrationSpecificTypes,
+	RTInlineNode,
+	RTNode,
+	RichTextNodeTypes,
+} from "@prismicio/client"
 import type { Element } from "hast"
 
 import type { RTPartialInlineNode } from "./lib/RichTextFieldBuilder"
@@ -52,9 +57,7 @@ export type RichTextHTMLMapSerializerFunction = (
 	payload: RichTextHTMLMapSerializerFunctionPayload,
 ) =>
 	| RichTextHTMLMapSerializerShorthand
-	| RTNode
-	| RTInlineNode
-	| RTPartialInlineNode
+	| InjectMigrationSpecificTypes<RTNode | RTInlineNode | RTPartialInlineNode>
 	| undefined
 
 /**

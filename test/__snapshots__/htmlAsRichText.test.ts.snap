@@ -850,6 +850,24 @@ exports[`transforms HTML to rich text > lists > o-list-item 1`] = `
 ]
 `;
 
+exports[`transforms HTML to rich text > spans > directly adjacent spans > compacts similar > hyperlink (migration) 1`] = `
+[
+  {
+    "direction": "ltr",
+    "spans": [
+      {
+        "data": [Function],
+        "end": 17,
+        "start": 6,
+        "type": "hyperlink",
+      },
+    ],
+    "text": "lorem ipsum dolor sit amet",
+    "type": "paragraph",
+  },
+]
+`;
+
 exports[`transforms HTML to rich text > spans > directly adjacent spans > compacts similar > hyperlink 1`] = `
 [
   {
@@ -931,6 +949,30 @@ exports[`transforms HTML to rich text > spans > directly adjacent spans > compac
       },
     ],
     "text": "lorem ipsum dolor sit amet consectetur adipiscing elit",
+    "type": "paragraph",
+  },
+]
+`;
+
+exports[`transforms HTML to rich text > spans > directly adjacent spans > does not compact different > hyperlink (migration) 1`] = `
+[
+  {
+    "direction": "ltr",
+    "spans": [
+      {
+        "data": [Function],
+        "end": 11,
+        "start": 6,
+        "type": "hyperlink",
+      },
+      {
+        "data": [Function],
+        "end": 17,
+        "start": 11,
+        "type": "hyperlink",
+      },
+    ],
+    "text": "lorem ipsum dolor sit amet",
     "type": "paragraph",
   },
 ]

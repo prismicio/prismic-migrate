@@ -1,4 +1,5 @@
 import type {
+	InjectMigrationSpecificTypes,
 	RTInlineNode,
 	RTLinkNode,
 	RTNode,
@@ -26,13 +27,13 @@ type DistributedOmit<
 export type RTPartialInlineNode = DistributedOmit<RTInlineNode, "start" | "end">
 
 export class RichTextFieldBuilder {
-	#nodes: RTNode[] = []
+	#nodes: InjectMigrationSpecificTypes<RTNode>[] = []
 
-	get #last(): RTNode | undefined {
+	get #last(): InjectMigrationSpecificTypes<RTNode> | undefined {
 		return this.#nodes[this.#nodes.length - 1]
 	}
 
-	appendNode(node: RTNode): void {
+	appendNode(node: InjectMigrationSpecificTypes<RTNode>): void {
 		this.cleanupLast()
 
 		this.#nodes.push(node)
@@ -50,17 +51,22 @@ export class RichTextFieldBuilder {
 		})
 	}
 
-	appendSpan(span: RTInlineNode): void
-	appendSpan(partialSpan: RTPartialInlineNode, length: number): void
+	appendSpan(span: InjectMigrationSpecificTypes<RTInlineNode>): void
 	appendSpan(
-		spanOrPartialSpan: RTInlineNode | RTPartialInlineNode,
+		partialSpan: InjectMigrationSpecificTypes<RTPartialInlineNode>,
+		length: number,
+	): void
+	appendSpan(
+		spanOrPartialSpan: InjectMigrationSpecificTypes<
+			RTInlineNode | RTPartialInlineNode
+		>,
 		length?: number,
 	): void {
 		if (!this.isTextNode(this.#last)) {
 			throw new PrismicRichTextError("Cannot add span to non-text last node")
 		}
 
-		let span: RTInlineNode
+		let span: InjectMigrationSpecificTypes<RTInlineNode>
 		if ("start" in spanOrPartialSpan && "end" in spanOrPartialSpan) {
 			span = spanOrPartialSpan
 		} else {
@@ -95,9 +101,19 @@ export class RichTextFieldBuilder {
 					// Check that all data fields are the same. Since it's not a
 					// deep equal operation, this doesn't guarantee a perfect
 					// match with content relationship.
-					const isSameLink = (
-						Object.entries(span.data) as [keyof RTLinkNode["data"], unknown][]
-					).every(([key, value]) => lastSpan.data[key] === value)
+					const isSameLink =
+						typeof span.data === "object" && typeof lastSpan.data === "object"
+							? (
+									Object.entries(span.data) as [
+										keyof RTLinkNode["data"],
+										unknown,
+									][]
+								).every(
+									([key, value]) =>
+										lastSpan.data?.[key as keyof (typeof lastSpan)["data"]] ===
+										value,
+								)
+							: span.data === lastSpan.data
 
 					if (isSameLink) {
 						lastIdenticalSpanIndex = i
@@ -158,7 +174,9 @@ export class RichTextFieldBuilder {
 	 *
 	 * @returns `true` if `node` is a text node, `false` otherwise.
 	 */
-	private isTextNode(node?: RTNode): node is RTTextNode {
+	private isTextNode(
+		node?: InjectMigrationSpecificTypes<RTNode>,
+	): node is InjectMigrationSpecificTypes<RTTextNode> {
 		return !!node && node.type !== "image" && node.type !== "embed"
 	}
 }

@@ -71,6 +71,22 @@ describe("transforms HTML to rich text", () => {
 					expectHTMLToMatchInputExactly: false,
 				})
 
+				const resolver = () => undefined
+				testHTMLAsRichTextHelper("hyperlink (migration)", {
+					input: /* html */ `<p>lorem <a href="https://prismic.io">ipsum</a><a href="https://prismic.io"> dolor</a> sit amet</p>`,
+					config: {
+						serializer: {
+							a: () => {
+								return {
+									type: "hyperlink",
+									data: resolver,
+								}
+							},
+						},
+					},
+					expectHTMLToMatchInputExactly: false,
+				})
+
 				testHTMLAsRichTextHelper("label", {
 					input: /* html */ `<p>lorem <span class="underline">ipsum</span><span class="underline"> dolor</span> sit amet</p>`,
 					config: { serializer: { "span.underline": { label: "underline" } } },
@@ -86,6 +102,21 @@ describe("transforms HTML to rich text", () => {
 			describe("does not compact different", () => {
 				testHTMLAsRichTextHelper("hyperlink", {
 					input: /* html */ `<p>lorem <a href="https://prismic.io">ipsum</a><a href="https://google.com"> dolor</a> sit amet</p>`,
+				})
+
+				testHTMLAsRichTextHelper("hyperlink (migration)", {
+					input: /* html */ `<p>lorem <a href="https://prismic.io">ipsum</a><a href="https://prismic.io"> dolor</a> sit amet</p>`,
+					config: {
+						serializer: {
+							a: () => {
+								return {
+									type: "hyperlink",
+									data: () => undefined,
+								}
+							},
+						},
+					},
+					expectHTMLToMatchInputExactly: false,
 				})
 
 				testHTMLAsRichTextHelper("label", {
