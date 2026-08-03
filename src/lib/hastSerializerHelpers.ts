@@ -4,23 +4,19 @@ import type { Element } from "hast"
 import { toHtml } from "hast-util-to-html"
 
 import { PrismicRichTextSerializerError } from "../errors/PrismicRichTextSerializerError"
-
 import type { RTPartialInlineNode } from "./RichTextFieldBuilder"
 
 /**
  * Serializes a hast {@link Element} node to a {@link RTImageNode}.
  *
  * @param node - A hast node to serialize.
- *
  * @returns Equivalent {@link RTImageNode}.
  */
 export const serializeImage = (node: Element): RTImageNode => {
 	const src = node.properties?.src as string | undefined
 
 	if (!src) {
-		throw new PrismicRichTextSerializerError(
-			"Element of type `img` is missing an `src` attribute",
-		)
+		throw new PrismicRichTextSerializerError("Element of type `img` is missing an `src` attribute")
 	}
 
 	const url = new URL(src, "https://noop.com")
@@ -42,9 +38,7 @@ export const serializeImage = (node: Element): RTImageNode => {
 		}
 
 		if (url.searchParams.has("rect")) {
-			const [rectX, rextY, rectW, _rectH] = url.searchParams
-				.get("rect")!
-				.split(",")
+			const [rectX, rextY, rectW, _rectH] = url.searchParams.get("rect")!.split(",")
 
 			x = Number(rectX)
 			y = Number(rextY)
@@ -74,7 +68,6 @@ export const serializeImage = (node: Element): RTImageNode => {
  * Serializes a hast {@link Element} node to a {@link RTEmbedNode}.
  *
  * @param node - A hast node to serialize.
- *
  * @returns Equivalent {@link RTEmbedNode}.
  */
 export const serializeEmbed = (node: Element): RTEmbedNode => {
@@ -117,19 +110,13 @@ export const serializeEmbed = (node: Element): RTEmbedNode => {
  *
  * @param node - A hast node to serialize.
  * @param rtPartialInlineNode - A partial rich text node.
- *
  * @returns Equivalent {@link RTPartialInlineNode}.
  */
 export const serializeSpan = (
 	node: Element,
-	rtPartialInlineNode:
-		| RTPartialInlineNode
-		| Omit<RTLinkNode, "start" | "end" | "data">,
+	rtPartialInlineNode: RTPartialInlineNode | Omit<RTLinkNode, "start" | "end" | "data">,
 ): RTPartialInlineNode => {
-	if (
-		rtPartialInlineNode.type === "hyperlink" &&
-		!("data" in rtPartialInlineNode)
-	) {
+	if (rtPartialInlineNode.type === "hyperlink" && !("data" in rtPartialInlineNode)) {
 		const url = node.properties?.href as string | undefined
 		if (!url) {
 			throw new PrismicRichTextSerializerError(
