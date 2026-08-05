@@ -475,7 +475,7 @@ describe("transforms HTML to rich text", () => {
 			})
 
 			testHTMLAsRichTextHelper("marks text as right-to-left", {
-				input: /* html */ `<p>lorem ipsum dolor sit amet</p>`,
+				input: /* html */ `<p dir="rtl">lorem ipsum dolor sit amet</p>`,
 				config: { direction: "rtl" },
 			})
 		})

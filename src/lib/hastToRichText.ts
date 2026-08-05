@@ -102,11 +102,11 @@ export const hastToRichText = (
 		if (node.type === "element") {
 			// Transforms line break elements to line breaks
 			if (node.tagName === "br") {
-			try {
-				builder.appendText("\n")
-			} catch {
-				// noop
-			}
+				try {
+					builder.appendText("\n")
+				} catch {
+					// noop
+				}
 			}
 
 			// Resolves the serializer responsible for the current node.
@@ -142,15 +142,15 @@ export const hastToRichText = (
 						case RichTextNodeType.hyperlink: {
 							const length = toString(node).trimEnd().length
 
-						try {
-							builder.appendSpan(shorthandOrNode, length)
-						} catch {
-							// Happens when we extract an image/embed node inside an RTTextNode and that
-							// the next children is a span. The last RT node type is then an image/embed
-							// node, so we need to resume a new RT text node.
-							builder.appendTextNode(lastRTTextNodeType, config?.direction)
-							builder.appendSpan(shorthandOrNode, length)
-						}
+							try {
+								builder.appendSpan(shorthandOrNode, length)
+							} catch {
+								// Happens when we extract an image/embed node inside an RTTextNode and that
+								// the next children is a span. The last RT node type is then an image/embed
+								// node, so we need to resume a new RT text node.
+								builder.appendTextNode(lastRTTextNodeType, config?.direction)
+								builder.appendSpan(shorthandOrNode, length)
+							}
 
 							return
 						}
@@ -220,15 +220,15 @@ export const hastToRichText = (
 						const span = serializeSpan(node, match)
 						const length = toString(node).trimEnd().length
 
-					try {
-						builder.appendSpan(span, length)
-					} catch {
-						// Happens when we extract an image/embed node inside an RTTextNode and that
-						// the next children is a span. The last RT node type is then an image/embed
-						// node, so we need to resume a new RT text node.
-						builder.appendTextNode(lastRTTextNodeType, config?.direction)
-						builder.appendSpan(span, length)
-					}
+						try {
+							builder.appendSpan(span, length)
+						} catch {
+							// Happens when we extract an image/embed node inside an RTTextNode and that
+							// the next children is a span. The last RT node type is then an image/embed
+							// node, so we need to resume a new RT text node.
+							builder.appendTextNode(lastRTTextNodeType, config?.direction)
+							builder.appendSpan(span, length)
+						}
 						break
 					}
 
@@ -253,14 +253,14 @@ export const hastToRichText = (
 			// Inspired from `hast-util-whitespace`, see:
 			// https://github.com/syntax-tree/hast-util-whitespace/blob/main/lib/index.js
 			if (!(node.value.replace(/[ \t\n\f\r]/g, "") === "")) {
-			try {
-				builder.appendText(node.value)
-			} catch {
-				// Happens when we extract an image/embed node inside an RTTextNode. The last RT
-				// node type is then an image/embed node, so we need to resume a new RT text node.
-				builder.appendTextNode(lastRTTextNodeType, config?.direction)
-				builder.appendText(node.value)
-			}
+				try {
+					builder.appendText(node.value)
+				} catch {
+					// Happens when we extract an image/embed node inside an RTTextNode. The last RT
+					// node type is then an image/embed node, so we need to resume a new RT text node.
+					builder.appendTextNode(lastRTTextNodeType, config?.direction)
+					builder.appendText(node.value)
+				}
 			}
 		}
 
