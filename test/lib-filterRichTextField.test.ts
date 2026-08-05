@@ -1,15 +1,9 @@
+import type { RTImageNode, RTParagraphNode, RichTextField } from "@prismicio/client"
+import { LinkType } from "@prismicio/client"
 import { expect, it } from "vitest"
 
-import type {
-	RTImageNode,
-	RTParagraphNode,
-	RichTextField,
-} from "@prismicio/client"
-import { LinkType } from "@prismicio/client"
-
-import { createRichTextFixtures } from "./__testutils__/createRichTextFixtures"
-
 import { filterRichTextField } from "../src/lib/filterRichTextField"
+import { createRichTextFixtures } from "./__testutils__/createRichTextFixtures"
 
 it("filters out node types that aren't allowed by single type model", () => {
 	const input: RichTextField = [
@@ -40,9 +34,7 @@ it("filters out node types that aren't allowed by single type model", () => {
 	})
 
 	expect(output).toHaveLength(1)
-	expect(output.every((node) => allowedNodeTypes.includes(node.type))).toBe(
-		true,
-	)
+	expect(output.every((node) => allowedNodeTypes.includes(node.type))).toBe(true)
 })
 
 it("filters out node types that aren't allowed by multi type model", () => {
@@ -58,9 +50,7 @@ it("filters out node types that aren't allowed by multi type model", () => {
 	})
 
 	expect(output.length).toBeGreaterThanOrEqual(1)
-	expect(output.every((node) => allowedNodeTypes.includes(node.type))).toBe(
-		true,
-	)
+	expect(output.every((node) => allowedNodeTypes.includes(node.type))).toBe(true)
 })
 
 it("filters out span node types that aren't allowed by single type model", () => {
@@ -93,9 +83,7 @@ it("filters out span node types that aren't allowed by single type model", () =>
 	}) as RTParagraphNode[]
 
 	expect(output.spans.length).toBeGreaterThanOrEqual(1)
-	expect(
-		output.spans.every((span) => allowedNodeTypes.includes(span.type)),
-	).toBe(true)
+	expect(output.spans.every((span) => allowedNodeTypes.includes(span.type))).toBe(true)
 })
 
 it("filters out label span nodes that aren't allowed by single type model", () => {
@@ -133,8 +121,7 @@ it("filters out label span nodes that aren't allowed by single type model", () =
 	expect(output.spans.length).toBeGreaterThanOrEqual(1)
 	expect(
 		output.spans.every(
-			(span) =>
-				span.type === "label" && allowedLabelTypes.includes(span.data.label),
+			(span) => span.type === "label" && allowedLabelTypes.includes(span.data.label),
 		),
 	).toBe(true)
 })
@@ -177,9 +164,7 @@ it('removes `target: "_blank"` from hyperlink spans when they are not allowed', 
 	expect(
 		allowedOutput.spans.every(
 			(span) =>
-				span.type === "hyperlink" &&
-				span.data.link_type === LinkType.Web &&
-				!span.data.target,
+				span.type === "hyperlink" && span.data.link_type === LinkType.Web && !span.data.target,
 		),
 	).toBe(false)
 
@@ -195,9 +180,7 @@ it('removes `target: "_blank"` from hyperlink spans when they are not allowed', 
 	expect(
 		notAllowedOutput.spans.every(
 			(span) =>
-				span.type === "hyperlink" &&
-				span.data.link_type === LinkType.Web &&
-				!span.data.target,
+				span.type === "hyperlink" && span.data.link_type === LinkType.Web && !span.data.target,
 		),
 	).toBe(true)
 })
@@ -239,10 +222,7 @@ it('removes `target: "_blank"` from image nodes when they are not allowed', () =
 	expect(allowedOutput.length).toBeGreaterThanOrEqual(1)
 	expect(
 		allowedOutput.every(
-			(node) =>
-				node.linkTo &&
-				node.linkTo.link_type === LinkType.Web &&
-				!node.linkTo.target,
+			(node) => node.linkTo && node.linkTo.link_type === LinkType.Web && !node.linkTo.target,
 		),
 	).toBe(false)
 
@@ -257,10 +237,7 @@ it('removes `target: "_blank"` from image nodes when they are not allowed', () =
 	expect(notAllowedOutput.length).toBeGreaterThanOrEqual(1)
 	expect(
 		notAllowedOutput.every(
-			(node) =>
-				node.linkTo &&
-				node.linkTo.link_type === LinkType.Web &&
-				!node.linkTo.target,
+			(node) => node.linkTo && node.linkTo.link_type === LinkType.Web && !node.linkTo.target,
 		),
 	).toBe(true)
 })

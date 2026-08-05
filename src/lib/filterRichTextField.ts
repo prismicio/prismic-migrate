@@ -13,23 +13,16 @@ import { LinkType, RichTextNodeType } from "@prismicio/client"
  * Get allowed nodes types from a rich text or title field custom type model.
  *
  * @param model - A rich text or title field custom type model.
- *
  * @returns An array of allowed nodes types.
  */
-const getAllowedNodeTypes = (
-	model: CustomTypeModelRichTextField,
-): RichTextNodeTypes[] => {
+const getAllowedNodeTypes = (model: CustomTypeModelRichTextField): RichTextNodeTypes[] => {
 	const allowedNodeTypes: RichTextNodeTypes[] = [] // An empty array means no nodes are allowed by default.
 
 	if (model.config) {
 		if ("multi" in model.config && model.config.multi) {
-			allowedNodeTypes.push(
-				...(model.config.multi.split(",") as RichTextNodeTypes[]),
-			)
+			allowedNodeTypes.push(...(model.config.multi.split(",") as RichTextNodeTypes[]))
 		} else if ("single" in model.config && model.config.single) {
-			allowedNodeTypes.push(
-				...(model.config.single.split(",") as RichTextNodeTypes[]),
-			)
+			allowedNodeTypes.push(...(model.config.single.split(",") as RichTextNodeTypes[]))
 		}
 
 		if (model.config.labels?.length) {
@@ -45,17 +38,10 @@ const getAllowedNodeTypes = (
  *
  * @param node - An image node to filter.
  * @param model - A rich text or title field custom type model.
- *
  * @returns A filtered image node based on the given model.
  */
-const filterImageNode = (
-	node: RTImageNode,
-	model: CustomTypeModelRichTextField,
-): RTImageNode => {
-	if (
-		!model.config?.allowTargetBlank &&
-		node.linkTo?.link_type === LinkType.Web
-	) {
+const filterImageNode = (node: RTImageNode, model: CustomTypeModelRichTextField): RTImageNode => {
+	if (!model.config?.allowTargetBlank && node.linkTo?.link_type === LinkType.Web) {
 		return {
 			...node,
 			linkTo: {
@@ -74,7 +60,6 @@ const filterImageNode = (
  * @param node - A text node to filter.
  * @param model - A rich text or title field custom type model.
  * @param allowedNodeTypes - An array of allowed nodes types.
- *
  * @returns A filtered text node based on the given model.
  */
 const filterTextNode = (
@@ -92,10 +77,7 @@ const filterTextNode = (
 
 		if (allowedNodeTypes.includes(span.type)) {
 			if (span.type === RichTextNodeType.hyperlink) {
-				if (
-					!model.config?.allowTargetBlank &&
-					span.data.link_type === LinkType.Web
-				) {
+				if (!model.config?.allowTargetBlank && span.data.link_type === LinkType.Web) {
 					filteredNode.spans.push({
 						...span,
 						data: {
@@ -124,7 +106,6 @@ const filterTextNode = (
  *
  * @param richTextField - A rich text or title field from Prismic.
  * @param model - A rich text or title field custom type model.
- *
  * @returns A rich text or title field filtered based on the given model.
  */
 export const filterRichTextField = <Field extends RichTextField | TitleField>(

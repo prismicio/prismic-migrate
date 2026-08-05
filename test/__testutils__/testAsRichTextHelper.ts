@@ -1,6 +1,5 @@
-import { expect, it } from "vitest"
-
 import { LinkType, asHTML } from "@prismicio/client"
+import { expect, it } from "vitest"
 
 import { htmlAsRichText } from "../../src"
 import type { HTMLAsRichTextConfig } from "../../src/htmlAsRichText"
@@ -10,19 +9,17 @@ type TestAsRichTextHelperArgs<TConfig> = {
 
 	config?: TConfig
 
-	/**
-	 * Warnings that are expected to be present in the output.
-	 */
+	/** Warnings that are expected to be present in the output. */
 	expectWarnings?: string[]
 
 	/**
-	 * The rich text format is a lossy representation of HTML. Namely it does not
-	 * preserves indentation and applies some optimizations to the output such as
-	 * merging directly adjacent identical spans.
+	 * The rich text format is a lossy representation of HTML. Namely it does not preserves
+	 * indentation and applies some optimizations to the output such as merging directly adjacent
+	 * identical spans.
 	 *
-	 * By default, the test suite will expect the HTML representation of the
-	 * output to exactly match the input. This flag can be used to tell it to
-	 * expect the output to not match the input instead.
+	 * By default, the test suite will expect the HTML representation of the output to exactly match
+	 * the input. This flag can be used to tell it to expect the output to not match the input
+	 * instead.
 	 */
 	expectHTMLToMatchInputExactly?: boolean
 }
@@ -63,9 +60,7 @@ const testAsRichTextHelperFactory = <THelper extends typeof htmlAsRichText>(
 			},
 		})
 
-		expect(output.warnings.sort()).toStrictEqual(
-			args.expectWarnings?.sort() ?? [],
-		)
+		expect(output.warnings.sort()).toStrictEqual(args.expectWarnings?.sort() ?? [])
 
 		if (
 			typeof args.expectHTMLToMatchInputExactly === "undefined" ||

@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest"
 
-import { testHTMLAsRichTextHelper } from "./__testutils__/testAsRichTextHelper"
-
 import { htmlAsRichText } from "../src"
+import { testHTMLAsRichTextHelper } from "./__testutils__/testAsRichTextHelper"
 
 describe("transforms HTML to rich text", () => {
 	describe("basic", () => {
@@ -40,9 +39,7 @@ describe("transforms HTML to rich text", () => {
 
 		testHTMLAsRichTextHelper("hyperlink missing href", {
 			input: /* html */ `<p>lorem <a>ipsum</a> dolor sit amet</p>`,
-			expectWarnings: [
-				"1:10-1:22: Element of type `hyperlink` is missing an `href` attribute",
-			],
+			expectWarnings: ["1:10-1:22: Element of type `hyperlink` is missing an `href` attribute"],
 			expectHTMLToMatchInputExactly: false,
 		})
 
@@ -176,9 +173,7 @@ describe("transforms HTML to rich text", () => {
 
 		testHTMLAsRichTextHelper("missing src", {
 			input: /* html */ `<img />`,
-			expectWarnings: [
-				"1:1-1:8: Element of type `img` is missing an `src` attribute",
-			],
+			expectWarnings: ["1:1-1:8: Element of type `img` is missing an `src` attribute"],
 			expectHTMLToMatchInputExactly: false,
 		})
 
@@ -219,9 +214,7 @@ describe("transforms HTML to rich text", () => {
 
 		testHTMLAsRichTextHelper("missing src", {
 			input: /* html */ `<iframe></iframe>`,
-			expectWarnings: [
-				"1:1-1:18: Element of type `embed` is missing an `src` attribute",
-			],
+			expectWarnings: ["1:1-1:18: Element of type `embed` is missing an `src` attribute"],
 			expectHTMLToMatchInputExactly: false,
 		})
 	})
@@ -266,9 +259,7 @@ describe("transforms HTML to rich text", () => {
 						htmlAsRichText(/* html */ `<p>lorem ipsum dolor sit amet</p>`, {
 							serializer: { p: "foo" as "paragraph" },
 						}),
-					).toThrowErrorMatchingInlineSnapshot(
-						`[Error: Unknown rich text node type: \`foo\`]`,
-					)
+					).toThrowErrorMatchingInlineSnapshot(`[Error: Unknown rich text node type: \`foo\`]`)
 				})
 			})
 
@@ -277,8 +268,7 @@ describe("transforms HTML to rich text", () => {
 					input: /* html */ `<p data-heading>lorem ipsum dolor sit amet</p><p>consectetur adipiscing elit</p>`,
 					config: {
 						serializer: {
-							p: ({ node }) =>
-								"dataHeading" in node.properties ? "heading1" : "paragraph",
+							p: ({ node }) => ("dataHeading" in node.properties ? "heading1" : "paragraph"),
 						},
 					},
 					expectHTMLToMatchInputExactly: false,
@@ -288,8 +278,7 @@ describe("transforms HTML to rich text", () => {
 					input: /* html */ `<p data-heading>lorem ipsum dolor sit amet</p><p>consectetur adipiscing elit</p>`,
 					config: {
 						serializer: {
-							p: ({ node }) =>
-								"dataHeading" in node.properties ? undefined : "paragraph",
+							p: ({ node }) => ("dataHeading" in node.properties ? undefined : "paragraph"),
 						},
 					},
 					expectHTMLToMatchInputExactly: false,
@@ -443,32 +432,26 @@ describe("transforms HTML to rich text", () => {
 				expectHTMLToMatchInputExactly: false,
 			})
 
-			testHTMLAsRichTextHelper(
-				"dedupes matches that are child of other matches",
-				{
-					input: /* html */ `
+			testHTMLAsRichTextHelper("dedupes matches that are child of other matches", {
+				input: /* html */ `
 						<article id="foo"><p>lorem ipsum dolor sit amet</p></article>
 						<article id="bar"><p>consectetur adipiscing elit</p></article>`,
-					config: { include: ["article#bar", "p"] },
-					expectHTMLToMatchInputExactly: false,
-				},
-			)
+				config: { include: ["article#bar", "p"] },
+				expectHTMLToMatchInputExactly: false,
+			})
 		})
 
 		describe("model", () => {
-			testHTMLAsRichTextHelper(
-				"filters output according to single type model",
-				{
-					input: /* html */ `<h1>lorem <strong>ipsum</strong> dolor <em>sit</em> amet</h1><p>consectetur <strong>adipiscing</strong> elit</p>`,
-					config: {
-						model: {
-							type: "StructuredText",
-							config: { single: "heading1,strong" },
-						},
+			testHTMLAsRichTextHelper("filters output according to single type model", {
+				input: /* html */ `<h1>lorem <strong>ipsum</strong> dolor <em>sit</em> amet</h1><p>consectetur <strong>adipiscing</strong> elit</p>`,
+				config: {
+					model: {
+						type: "StructuredText",
+						config: { single: "heading1,strong" },
 					},
-					expectHTMLToMatchInputExactly: false,
 				},
-			)
+				expectHTMLToMatchInputExactly: false,
+			})
 
 			testHTMLAsRichTextHelper("filters output according to multi type model", {
 				input: /* html */ `

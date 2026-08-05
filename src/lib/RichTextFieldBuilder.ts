@@ -16,14 +16,11 @@ import { PrismicRichTextError } from "../errors/PrismicRichTextError"
  *
  * @see https://github.com/sindresorhus/type-fest/blob/8a45ba048767aaffcebc7d190172d814a739feb0/source/distributed-omit.d.ts
  */
-type DistributedOmit<
-	ObjectType,
-	KeyType extends keyof ObjectType,
-> = ObjectType extends unknown ? Omit<ObjectType, KeyType> : never
+type DistributedOmit<ObjectType, KeyType extends keyof ObjectType> = ObjectType extends unknown
+	? Omit<ObjectType, KeyType>
+	: never
 
-/**
- * An inline node without its `start` and `end` properties.
- */
+/** An inline node without its `start` and `end` properties. */
 export type RTPartialInlineNode = DistributedOmit<RTInlineNode, "start" | "end">
 
 export class RichTextFieldBuilder {
@@ -39,10 +36,7 @@ export class RichTextFieldBuilder {
 		this.#nodes.push(node)
 	}
 
-	appendTextNode(
-		type: RTTextNode["type"],
-		direction: "ltr" | "rtl" = "ltr",
-	): void {
+	appendTextNode(type: RTTextNode["type"], direction: "ltr" | "rtl" = "ltr"): void {
 		this.appendNode({
 			type,
 			text: "",
@@ -52,14 +46,9 @@ export class RichTextFieldBuilder {
 	}
 
 	appendSpan(span: InjectMigrationSpecificTypes<RTInlineNode>): void
+	appendSpan(partialSpan: InjectMigrationSpecificTypes<RTPartialInlineNode>, length: number): void
 	appendSpan(
-		partialSpan: InjectMigrationSpecificTypes<RTPartialInlineNode>,
-		length: number,
-	): void
-	appendSpan(
-		spanOrPartialSpan: InjectMigrationSpecificTypes<
-			RTInlineNode | RTPartialInlineNode
-		>,
+		spanOrPartialSpan: InjectMigrationSpecificTypes<RTInlineNode | RTPartialInlineNode>,
 		length?: number,
 	): void {
 		if (!this.isTextNode(this.#last)) {
@@ -89,10 +78,7 @@ export class RichTextFieldBuilder {
 					break
 				}
 			} else if (span.type === "label") {
-				if (
-					lastSpan.type === "label" &&
-					lastSpan.data.label === span.data.label
-				) {
+				if (lastSpan.type === "label" && lastSpan.data.label === span.data.label) {
 					lastIdenticalSpanIndex = i
 					break
 				}
@@ -103,15 +89,9 @@ export class RichTextFieldBuilder {
 					// match with content relationship.
 					const isSameLink =
 						typeof span.data === "object" && typeof lastSpan.data === "object"
-							? (
-									Object.entries(span.data) as [
-										keyof RTLinkNode["data"],
-										unknown,
-									][]
-								).every(
+							? (Object.entries(span.data) as [keyof RTLinkNode["data"], unknown][]).every(
 									([key, value]) =>
-										lastSpan.data?.[key as keyof (typeof lastSpan)["data"]] ===
-										value,
+										lastSpan.data?.[key as keyof (typeof lastSpan)["data"]] === value,
 								)
 							: span.data === lastSpan.data
 
@@ -158,9 +138,7 @@ export class RichTextFieldBuilder {
 		return this.#nodes as RichTextField
 	}
 
-	/**
-	 * Cleans up the current last node.
-	 */
+	/** Cleans up the current last node. */
 	private cleanupLast(): void {
 		if (this.isTextNode(this.#last)) {
 			this.#last.text = this.#last.text.trimEnd()
@@ -170,8 +148,7 @@ export class RichTextFieldBuilder {
 	/**
 	 * Determines if a node is a text node.
 	 *
-	 * @param node - rich text node to check.
-	 *
+	 * @param node - Rich text node to check.
 	 * @returns `true` if `node` is a text node, `false` otherwise.
 	 */
 	private isTextNode(
