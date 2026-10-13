@@ -67,6 +67,6 @@
 		"@prismicio/client": "^7.21.8"
 	},
 	"engines": {
-		"node": ">=20"
+		"node": ">=22"
 	}
 }
